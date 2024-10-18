@@ -73,8 +73,8 @@ def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
 # Streamlit app configuration
 
 st.set_page_config(layout="wide")
-st.title('YouTube Channel Data Comparison App')
-st.header('Finance YouTube Channel Data Statistics')
+st.title('Indian Youtuber's Channel Data Comparison App')
+st.header('Indian Finance YouTuber's Channel Data Statistics')
 
 # Sidebar setup
 st.sidebar.title('Channel Management')
