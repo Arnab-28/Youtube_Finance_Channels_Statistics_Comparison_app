@@ -74,7 +74,7 @@ def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
 
 st.set_page_config(layout="wide")
 st.title("Indian Youtuber's Channel Data Comparison App")
-st.header("Indian Finance YouTuber's Channel Data Statistics")
+st.header("Finance YouTuber's Channels Data Statistics")
 
 # Sidebar setup
 st.sidebar.title('Channel Management')
