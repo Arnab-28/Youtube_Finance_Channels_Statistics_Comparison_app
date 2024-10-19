@@ -17,7 +17,7 @@ initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',  # Warikoo
                         'UCe3qdG0A_gr-sEdat5y2twQ',  # CA Rachana Phadke Ranade
                         'UCWHCXSKASuSzao_pplQ7SPw',  # Invest Aaj For Kal
                         'UCVOTBwF0vnSxMRIbfSE_K_g',  # Labour Law Advisor
-                        'UCt22CG7b9crZ0HDk1eTiJjA',  # Neeraj Arora
+                        'UCtnItzU7q_bA1eoEBjqcVrw',  # Shankar Nath
                         'UCqW8jxh4tH1Z1sWPbkGWL4g']  # Akshat Shrivastava                      
 
 # Function to fetch data from YouTube API
