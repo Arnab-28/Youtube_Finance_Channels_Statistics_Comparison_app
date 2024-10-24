@@ -1,24 +1,30 @@
-# Youtube_Finance_Channels_Statistics_Comparison_app
+# Indian YouTubers Finance Channels Data Comparison App
 
 ## Project Objective
 
-  The YouTube Channel Information App is designed to provide a comprehensive analysis of multiple YouTube channels. It allows users to:
-  1. View initial statistics of a predefined set of YouTube channels.
-  2. Add new YouTube channels by entering their Channel IDs.
-  3. Dynamically update the data and charts to reflect the latest information.
-  4. Visualize key metrics in a clear, comparative manner through various charts.
-     
+The Indian YouTubers Finance Channels Data Comparison App is a web application that allows users to compare the performance metrics of popular Indian finance-related YouTube channels. The app uses YouTube Data API to gather statistics such as the total number of subscribers, total views, total videos, and channel age. The app provides users with a detailed comparison of selected channels through interactive data visualizations.
+
+This project is built using the Streamlit framework, enabling users to visualize and interact with YouTube channel data dynamically. 
+
+The application allows users to:
+
+1. View statistics for a pre-defined list of Indian finance YouTube channels.
+2. Add new YouTube channels by providing the channel name.
+3. Filter and compare selected channels using bar charts.
+4. Dynamically update the channels data and charts to reflect the latest information.
+  
 ## Tech Stack
 
-  This project utilizes the following technologies
+- Frontend: Streamlit (Web App UI)
+- Backend: YouTube Data API, Google API client
+- Libraries:
+1.googleapiclient for interacting with the YouTube API.
+2.pandas for data manipulation.
+3.matplotlib and seaborn for data visualization.
+4.requests for HTTP requests to the YouTube search API.
+5.Deployment: The app can be deployed on platforms like Streamlit Cloud.
+- Version control system: Git
   
-  - Python: Core programming language.
-  - Streamlit: Framework for building interactive web applications.
-  - Google YouTube API: Used to fetch channel statistics data.
-  - Pandas: For data manipulation and analysis.
-  - Matplotlib & Seaborn: For data visualization.
-  - Git: Version control system.
-    
 ## Project Structure
 
 - README.md # Project documentation
