@@ -16,6 +16,6 @@
   - Git: Version control system.
 ## Project Structure
 
-|-- Youtube_Finace_Channels_Statistics_Comparison_WebApp.py                 # Main application file
-|-- README.md                                                               # Project documentation
-|-- requirements.txt                                                        # Python dependencies
+README.md                                                               # Project documentation
+Youtube_Finace_Channels_Statistics_Comparison_WebApp.py                 # Main application file
+requirements.txt                                                        # Python dependencies
