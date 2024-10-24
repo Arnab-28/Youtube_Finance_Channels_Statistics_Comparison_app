@@ -24,13 +24,13 @@
 
 ## How to Use the App
 
-### View Existing Channel Data:
+### View Existing Channel Data
     -  When the app first loads, it displays details and statistics of a predefined list of YouTube channels.
     -  You can see data like the total number of subscribers, views, videos, and the age of each channel.
-### Add a New Channel:
+### Add a New Channel
    -   In the sidebar, enter the Channel Name of the new channel you want to add.
    -   Click the "Add Channel" button to update the app with the new channel's details.
    -   The app will dynamically update the data and plots to include the new channel.
-### Select Channels and Charts:
+### Select Channels and Charts
    -   Use the sidebar to filter out specific channels that you want to display.
    -   Choose a chart type to display either individual metrics or all metrics together in a 2x2 grid format.
