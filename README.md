@@ -15,15 +15,21 @@ The application allows users to:
   
 ## Tech Stack
 
-- Frontend: Streamlit (Web App UI)
-- Backend: YouTube Data API, Google API client
-- Libraries:
+### Frontend: 
+Streamlit (Web App UI)
+
+### Backend: 
+YouTube Data API, Google API client
+
+### Libraries:
 1.googleapiclient for interacting with the YouTube API.
 2.pandas for data manipulation.
 3.matplotlib and seaborn for data visualization.
 4.requests for HTTP requests to the YouTube search API.
 5.Deployment: The app can be deployed on platforms like Streamlit Cloud.
-- Version control system: Git
+
+### Version control system: 
+Git
   
 ## Project Structure
 
