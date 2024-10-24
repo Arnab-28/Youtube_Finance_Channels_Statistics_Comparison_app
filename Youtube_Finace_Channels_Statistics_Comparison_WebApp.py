@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
 from datetime import datetime
+import requests
 
 # Use the YouTube API key
 api_key = 'AIzaSyBvVHqveFW4FLUuk4lh2kn8NMAF7t0QsY4'
@@ -19,6 +20,34 @@ initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',  # Warikoo
                         'UCVOTBwF0vnSxMRIbfSE_K_g',  # Labour Law Advisor
                         'UCtnItzU7q_bA1eoEBjqcVrw',  # Shankar Nath
                         'UCqW8jxh4tH1Z1sWPbkGWL4g']  # Akshat Shrivastava                      
+
+def get_channel_id(api_key, channel_name):
+    """Fetch the YouTube channel ID for the given channel name."""
+    base_url = "https://www.googleapis.com/youtube/v3/search"
+    
+    # Parameters for the request
+    params = {
+        'part': 'snippet',
+        'q': channel_name,
+        'type': 'channel',
+        'key': api_key
+    }
+    
+    # Making the API request
+    response = requests.get(base_url, params=params)
+    
+    if response.status_code == 200:
+        data = response.json()
+        
+        # If channels are found
+        if 'items' in data and len(data['items']) > 0:
+            # Getting the first channel ID from the search results
+            channel_id = data['items'][0]['snippet']['channelId']
+            return channel_id
+        else:
+            return None
+    else:
+        return None
 
 # Function to fetch data from YouTube API
 def get_channel_stats(channel_ids):
@@ -47,7 +76,7 @@ def get_channel_stats(channel_ids):
         all_data_pd['Total_Views_in_Lakh'] = all_data_pd['Total_Views'] / 100000
 
         current_date = datetime.now()
-        all_data_pd['Age'] = round((current_date - all_data_pd['Joinning_Date']).dt.days / 365.25, 2)
+        all_data_pd['Age'] = round((current_date - all_data_pd['Joinning_Date']).dt.days / 365, 2)
 
         return all_data_pd
     
@@ -91,21 +120,24 @@ selected_channels = st.sidebar.multiselect('Select Channels to Display:',
                                            default=st.session_state.channel_data['Channel_name'])
 
 # Text input for adding a new channel
-new_channel_id = st.sidebar.text_input('Add a New Channel ID:')
+new_channel_name = st.sidebar.text_input('Add a New Channel Name:')
+new_channel_id = get_channel_id(api_key,new_channel_name)
 
 if st.sidebar.button('Add Channel'):
     if new_channel_id and new_channel_id not in st.session_state.channel_ids:
+        # Append new channel ID and fetch its data
         st.session_state.channel_ids.append(new_channel_id)
         new_channel_data = get_channel_stats([new_channel_id])
         if new_channel_data is not None:
+            # Update the global dataframe
             st.session_state.channel_data = pd.concat([st.session_state.channel_data, new_channel_data], ignore_index=True)
-            st.sidebar.success(f'Channel ID {new_channel_id} added and data updated!')
+            st.sidebar.success(f'Channel "{new_channel_name}" added and data updated!')
         else:
-            st.sidebar.error('Failed to retrieve data for the new channel ID.')
+            st.sidebar.error('Failed to retrieve data for the new channel.')
     elif new_channel_id in st.session_state.channel_ids:
-        st.sidebar.warning('Channel ID already exists in the list.')
+        st.sidebar.warning('Channel already exists in the list.')
     else:
-        st.sidebar.error('Please enter a valid Channel ID.')
+        st.sidebar.error('Please enter a valid Channel Name.')
 
 # Sidebar for chart selection
 chart_option = st.sidebar.radio("Choose the chart to display:",
@@ -194,6 +226,6 @@ if st.button('Get Channel Statistics'):
             plt.tight_layout()
             st.pyplot(fig)
     else:
-        st.error('No data found for the provided Channel ID. Please check the ID and try again.')
+        st.error('No data found for the provided Channel Name. Please check the Name and try again.')
 else:
     st.warning('Please click the Button above 👆!')
