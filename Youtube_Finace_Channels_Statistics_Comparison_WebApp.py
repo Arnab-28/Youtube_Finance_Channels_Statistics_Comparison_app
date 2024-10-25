@@ -5,9 +5,13 @@ import seaborn as sns
 import streamlit as st
 from datetime import datetime
 import requests
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 # Use the YouTube API key
-api_key = 'AIzaSyAXSesf1gnp1yVRCB5rW0ioTceLT2EB1SE'
+api_key = os.getenv("api_key")
 
 # Initial list of channel IDs
 initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',  # Warikoo
