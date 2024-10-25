@@ -1,4 +1,6 @@
 streamlit
-google-api-python-client
+google-api-python-client==2.84.0
 matplotlib
 seaborn
+python-dotenv
+pip==24.2
