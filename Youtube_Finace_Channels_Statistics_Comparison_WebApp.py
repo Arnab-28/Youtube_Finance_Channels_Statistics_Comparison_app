@@ -98,7 +98,7 @@ def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
             ax.bar_label(container, fmt='%.2f', color='white', fontsize=10)
 
     except Exception:
-        st.error("Server is busy now! Please try again later.")
+        #st.error("Server is busy now! Please try again later.")
 
 # Streamlit app configuration
 st.set_page_config(layout="wide")
@@ -122,7 +122,7 @@ if not st.session_state.channel_data.empty:
                                            st.session_state.channel_data['Channel_name'],
                                            default=st.session_state.channel_data['Channel_name'])
 else:
-    st.warning("No channel data available. Please try again later.")
+    #st.warning("No channel data available. Please try again later.")
 
 # Text input for adding a new channel
 new_channel_name = st.sidebar.text_input('Add a New Channel Name/ID:')
