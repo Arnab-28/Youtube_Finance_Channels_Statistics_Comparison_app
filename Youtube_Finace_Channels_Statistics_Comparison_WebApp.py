@@ -109,7 +109,7 @@ def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
 
 st.set_page_config(layout="wide")
 st.title("India's Top YouTube Channels: Data-Driven Insights")
-st.header("Uncover the secrets of India's Finance Youtube landscape")
+st.header("Uncover the secrets of India's Finance Youtuber's landscape")
 
 # Sidebar setup
 st.sidebar.title('Channel Management')
@@ -126,7 +126,7 @@ selected_channels = st.sidebar.multiselect('Select Channels to Display:',
                                            default=st.session_state.channel_data['Channel_name'])
 
 # Text input for adding a new channel
-new_channel_name = st.sidebar.text_input('Add a New Channel Name:')
+new_channel_name = st.sidebar.text_input('Add a New Channel Name/ID:')
 new_channel_id = get_channel_id(api_key,new_channel_name)
 
 if st.sidebar.button('Add Channel'):
@@ -143,7 +143,7 @@ if st.sidebar.button('Add Channel'):
     elif new_channel_id in st.session_state.channel_ids:
         st.sidebar.warning('Channel already exists in the list.')
     else:
-        st.sidebar.error('Please enter a valid Channel Name.')
+        st.sidebar.error('Please enter a valid Channel Name/ID.')
 
 # Sidebar for chart selection
 chart_option = st.sidebar.radio("Choose the chart to display:",
@@ -232,6 +232,6 @@ if st.button('Get Channel Statistics'):
             plt.tight_layout()
             st.pyplot(fig)
     else:
-        st.error('No data found for the provided Channel Name. Please check the Name and try again.')
+        st.error('No data found for the provided Channel Name/ID. Please check the Name/ID and try again.')
 else:
     st.warning('Please click the Button above 👆!')
