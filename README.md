@@ -34,6 +34,7 @@ Git
   
 ## Project Structure
 
+- .env # Environment File
 - README.md # Project documentation
 - Youtube_Finace_Channels_Statistics_Comparison_WebApp.py # Main application file
 - requirements.txt # Project dependencies
