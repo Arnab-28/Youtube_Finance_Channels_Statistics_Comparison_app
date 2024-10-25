@@ -27,86 +27,82 @@ initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',  # Warikoo
 
 def get_channel_id(api_key, channel_name):
     """Fetch the YouTube channel ID for the given channel name."""
-    base_url = "https://www.googleapis.com/youtube/v3/search"
+    try:
+        base_url = "https://www.googleapis.com/youtube/v3/search"
+        # Parameters for the request
+        params = {
+                    'part': 'snippet',
+                    'q': channel_name,
+                    'type': 'channel',
+                    'key': api_key
+                }
+        # Making the API request
+        response = requests.get(base_url, params=params)
     
-    # Parameters for the request
-    params = {
-        'part': 'snippet',
-        'q': channel_name,
-        'type': 'channel',
-        'key': api_key
-    }
+        if response.status_code == 200:
+            data = response.json()
+            # If channels are found
+            if 'items' in data and len(data['items']) > 0:
+                # Getting the first channel ID from the search results
+                return data['items'][0]['snippet']['channelId']    
+        return None
     
-    # Making the API request
-    response = requests.get(base_url, params=params)
-    
-    if response.status_code == 200:
-        data = response.json()
-        
-        # If channels are found
-        if 'items' in data and len(data['items']) > 0:
-            # Getting the first channel ID from the search results
-            channel_id = data['items'][0]['snippet']['channelId']
-            return channel_id
-        else:
-            st.error('Server is Busy Now! Please try later.')
-            return None
-    else:
+    except Exception:
         st.error('Server is Busy Now! Please try later.')
         return None
 
 # Function to fetch data from YouTube API
 def get_channel_stats(channel_ids):
     
-    all_data = []
-
     try:
         youtube = build('youtube', 'v3', developerKey=api_key)
         request = youtube.channels().list(part='snippet,contentDetails,statistics',id=channel_ids)
         response = request.execute()
 
-        for item in response['items']:
-            data = {
-                    'Channel_name': item['snippet']['title'],
-                    'Total_Subscribers': int(item['statistics']['subscriberCount']),
-                    'Total_Views': int(item['statistics']['viewCount']),
-                    'Total_Videos': int(item['statistics']['videoCount']),
-                    'Joinning_Date': item['snippet']['publishedAt'].split('T')[0]
+        all_data = [
+                    {
+                        'Channel_name': item['snippet']['title'],
+                        'Total_Subscribers': int(item['statistics']['subscriberCount']),
+                        'Total_Views': int(item['statistics']['viewCount']),
+                        'Total_Videos': int(item['statistics']['videoCount']),
+                        'Joinning_Date': item['snippet']['publishedAt'].split('T')[0]
                     }
-            all_data.append(data)
-
+                    for item in response['items']
+                ]
+           
         all_data_pd = pd.DataFrame(all_data)
 
         all_data_pd['Joinning_Date'] = pd.to_datetime(all_data_pd['Joinning_Date'])
         all_data_pd['Total_Subscribers_in_Thousand'] = all_data_pd['Total_Subscribers'] / 1000
         all_data_pd['Total_Views_in_Lakh'] = all_data_pd['Total_Views'] / 100000
-
-        current_date = datetime.now()
-        all_data_pd['Age'] = round((current_date - all_data_pd['Joinning_Date']).dt.days / 365, 2)
+        all_data_pd['Age'] = round((datetime.now() - all_data_pd['Joinning_Date']).dt.days / 365, 2)
 
         return all_data_pd
     
     except Exception as e:
-        st.error(f"An error occurred: {e}")
+        st.error('Server is Busy Now! Please try later.')
         return None
 
 # Function to plot charts
 def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
 
-    sns.barplot(y=y_col, x=x_col, data=data, ax=ax, palette='viridis')
-    ax.set_title(title, color='white')
-    ax.set_xlabel(xlabel, color='white')
-    ax.set_ylabel('', color='white')
-    ax.set_facecolor('black')
-    ax.tick_params(axis='x', colors='white')
-    ax.tick_params(axis='y', colors='white')
+    try:
+        sns.barplot(y=y_col, x=x_col, data=data, ax=ax, palette='viridis')
+        ax.set_title(title, color='white')
+        ax.set_xlabel(xlabel, color='white')
+        ax.set_ylabel('', color='white')
+        ax.set_facecolor('black')
+        ax.tick_params(axis='x', colors='white')
+        ax.tick_params(axis='y', colors='white')
 
-    # Add data labels to each bar
-    for i in ax.containers:
-        ax.bar_label(i, fmt='%.2f', color='white', fontsize=10)
+        # Add data labels to each bar
+        for container in ax.containers:
+            ax.bar_label(container, fmt='%.2f', color='white', fontsize=10)
+
+    except Exception:
+        st.error("Server is busy now! Please try again later.")
 
 # Streamlit app configuration
-
 st.set_page_config(layout="wide")
 st.title("India's Top YouTube Channels: Data-Driven Insights")
 st.header("Uncover the secrets of India's Finance Youtuber's landscape")
@@ -134,7 +130,7 @@ if st.sidebar.button('Add Channel'):
         # Append new channel ID and fetch its data
         st.session_state.channel_ids.append(new_channel_id)
         new_channel_data = get_channel_stats([new_channel_id])
-        if new_channel_data is not None:
+        if not new_channel_data.empty:
             # Update the global dataframe
             st.session_state.channel_data = pd.concat([st.session_state.channel_data, new_channel_data], ignore_index=True)
             st.sidebar.success(f'Channel "{new_channel_name}" added and data updated!')
@@ -156,15 +152,15 @@ chart_option = st.sidebar.radio("Choose the chart to display:",
 
 if st.button('Get Channel Statistics'):
     channel_info = st.session_state.channel_data[st.session_state.channel_data['Channel_name'].isin(selected_channels)]
-    if channel_info is not None:
+    if not channel_info.empty:
         st.subheader('Channel Details')
         st.dataframe(channel_info)
+        
+        fig, axes = plt.subplots(2, 2, figsize=(14, 10), facecolor='black')
 
         # Display all charts or a specific chart based on user selection
         if chart_option == 'All Charts':
             # Create a 2x2 grid for displaying all charts
-            fig, axes = plt.subplots(2, 2, figsize=(14, 10), facecolor='black')
-
             plot_bar_chart_with_values(
                 data=channel_info, ax=axes[0, 0],
                 x_col='Total_Subscribers_in_Thousand', y_col='Channel_name',
