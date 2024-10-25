@@ -45,8 +45,10 @@ def get_channel_id(api_key, channel_name):
             channel_id = data['items'][0]['snippet']['channelId']
             return channel_id
         else:
+            st.error('Server is Busy Now! Please try later.')
             return None
     else:
+        st.error('Server is Busy Now! Please try later.')
         return None
 
 # Function to fetch data from YouTube API
