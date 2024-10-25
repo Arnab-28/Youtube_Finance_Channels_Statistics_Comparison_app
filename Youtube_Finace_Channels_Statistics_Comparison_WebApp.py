@@ -81,7 +81,7 @@ def get_channel_stats(channel_ids):
     
     except Exception as e:
         st.error('Server is Busy Now! Please try later.')
-        return None
+        return pd.DataFrame()
 
 # Function to plot charts
 def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
@@ -115,11 +115,16 @@ if 'channel_ids' not in st.session_state:
     st.session_state.channel_ids = initial_channel_ids
 if 'channel_data' not in st.session_state:
     st.session_state.channel_data = get_channel_stats(st.session_state.channel_ids)
+    if st.session_state.channel_data.empty:
+        st.session_state.channel_data = pd.DataFrame()  # Ensure a DataFrame even if data is missing
 
 # Multiselect for filtering channels
-selected_channels = st.sidebar.multiselect('Select Channels to Display:',
+if not st.session_state.channel_data.empty:
+    selected_channels = st.sidebar.multiselect('Select Channels to Display:',
                                            st.session_state.channel_data['Channel_name'],
                                            default=st.session_state.channel_data['Channel_name'])
+else:
+    st.warning("No channel data available. Please try again later.")
 
 # Text input for adding a new channel
 new_channel_name = st.sidebar.text_input('Add a New Channel Name/ID:')
@@ -151,83 +156,86 @@ chart_option = st.sidebar.radio("Choose the chart to display:",
                                 )
 
 if st.button('Get Channel Statistics'):
-    channel_info = st.session_state.channel_data[st.session_state.channel_data['Channel_name'].isin(selected_channels)]
-    if not channel_info.empty:
-        st.subheader('Channel Details')
-        st.dataframe(channel_info)
+    if not st.session_state.channel_data.empty:
+        channel_info = st.session_state.channel_data[st.session_state.channel_data['Channel_name'].isin(selected_channels)]
+        if not channel_info.empty:
+            st.subheader('Channel Details')
+            st.dataframe(channel_info)
         
-        fig, axes = plt.subplots(2, 2, figsize=(14, 10), facecolor='black')
+            fig, axes = plt.subplots(2, 2, figsize=(14, 10), facecolor='black')
 
-        # Display all charts or a specific chart based on user selection
-        if chart_option == 'All Charts':
-            # Create a 2x2 grid for displaying all charts
-            plot_bar_chart_with_values(
-                data=channel_info, ax=axes[0, 0],
-                x_col='Total_Subscribers_in_Thousand', y_col='Channel_name',
-                title='Total Subscribers (in Thousands) Vs. Channel_name', xlabel='Total Subscribers (in Thousands)'
-            )
-
-            plot_bar_chart_with_values(
-                data=channel_info, ax=axes[0, 1],
-                x_col='Total_Views_in_Lakh', y_col='Channel_name',
-                title='Total Views (in Lakh) Vs. Channel_name', xlabel='Total Views (in Lakh)'
-            )
-
-            plot_bar_chart_with_values(
-                data=channel_info, ax=axes[1, 0],
-                x_col='Total_Videos', y_col='Channel_name',
-                title='Total Videos Vs. Channel_name', xlabel='Total Videos'
-            )
-
-            plot_bar_chart_with_values(
-                data=channel_info, ax=axes[1, 1],
-                x_col='Age', y_col='Channel_name',
-                title='Channel Age (in Years) Vs. Channel_name', xlabel='Channel Age (in Years)'
-            )
-
-            plt.subplots_adjust(hspace=0.3, wspace=0.3)
-
-            fig.lines = []  
-            fig.lines.extend([plt.Line2D([0.5, 0.5], [0.05, 0.95], color='white', linewidth=2, transform=fig.transFigure)])
-            fig.lines.extend([plt.Line2D([0.05, 0.95], [0.5, 0.5], color='white', linewidth=2, transform=fig.transFigure)])
-            plt.tight_layout()
-            st.pyplot(fig)
-
-        else:
-            # Create a single chart based on the user selection
-            fig, axes = plt.subplots(figsize=(10, 6), facecolor='black')
-
-            if chart_option == 'Total Subscribers (in Thousands)':
+            # Display all charts or a specific chart based on user selection
+            if chart_option == 'All Charts':
+                # Create a 2x2 grid for displaying all charts
                 plot_bar_chart_with_values(
-                    data=channel_info, ax=axes,
+                    data=channel_info, ax=axes[0, 0],
                     x_col='Total_Subscribers_in_Thousand', y_col='Channel_name',
-                    title='Total Subscribers (in Thousands) Vs. Channel_name ', xlabel='Total Subscribers (in Thousands)'
+                    title='Total Subscribers (in Thousands) Vs. Channel_name', xlabel='Total Subscribers (in Thousands)'
                 )
 
-            elif chart_option == 'Total Views (in Lakh)':
                 plot_bar_chart_with_values(
-                    data=channel_info, ax=axes,
+                    data=channel_info, ax=axes[0, 1],
                     x_col='Total_Views_in_Lakh', y_col='Channel_name',
-                    title='Total Views (in Lakh) Vs. Channel_name ', xlabel='Total Views (in Lakh)'
+                    title='Total Views (in Lakh) Vs. Channel_name', xlabel='Total Views (in Lakh)'
                 )
 
-            elif chart_option == 'Total Videos':
                 plot_bar_chart_with_values(
-                    data=channel_info, ax=axes,
+                    data=channel_info, ax=axes[1, 0],
                     x_col='Total_Videos', y_col='Channel_name',
-                    title='Total Videos Vs. Channel_name ', xlabel='Total Videos'
+                    title='Total Videos Vs. Channel_name', xlabel='Total Videos'
                 )
 
-            elif chart_option == 'Age (Years)':
                 plot_bar_chart_with_values(
-                    data=channel_info, ax=axes,
+                    data=channel_info, ax=axes[1, 1],
                     x_col='Age', y_col='Channel_name',
-                    title='Channel Age (in Years) Vs. Channel_name', xlabel='Channel Age(in Years)'
+                    title='Channel Age (in Years) Vs. Channel_name', xlabel='Channel Age (in Years)'
                 )
 
-            plt.tight_layout()
-            st.pyplot(fig)
+                plt.subplots_adjust(hspace=0.3, wspace=0.3)
+
+                fig.lines = []  
+                fig.lines.extend([plt.Line2D([0.5, 0.5], [0.05, 0.95], color='white', linewidth=2, transform=fig.transFigure)])
+                fig.lines.extend([plt.Line2D([0.05, 0.95], [0.5, 0.5], color='white', linewidth=2, transform=fig.transFigure)])
+                plt.tight_layout()
+                st.pyplot(fig)
+
+            else:
+            # Create a single chart based on the user selection
+                fig, axes = plt.subplots(figsize=(10, 6), facecolor='black')
+
+                if chart_option == 'Total Subscribers (in Thousands)':
+                    plot_bar_chart_with_values(
+                        data=channel_info, ax=axes,
+                        x_col='Total_Subscribers_in_Thousand', y_col='Channel_name',
+                        title='Total Subscribers (in Thousands) Vs. Channel_name ', xlabel='Total Subscribers (in Thousands)'
+                    )
+
+                elif chart_option == 'Total Views (in Lakh)':
+                    plot_bar_chart_with_values(
+                        data=channel_info, ax=axes,
+                        x_col='Total_Views_in_Lakh', y_col='Channel_name',
+                        title='Total Views (in Lakh) Vs. Channel_name ', xlabel='Total Views (in Lakh)'
+                    )
+
+                elif chart_option == 'Total Videos':
+                    plot_bar_chart_with_values(
+                        data=channel_info, ax=axes,
+                        x_col='Total_Videos', y_col='Channel_name',
+                        title='Total Videos Vs. Channel_name ', xlabel='Total Videos'
+                    )
+
+                elif chart_option == 'Age (Years)':
+                    plot_bar_chart_with_values(
+                        data=channel_info, ax=axes,
+                        x_col='Age', y_col='Channel_name',
+                        title='Channel Age (in Years) Vs. Channel_name', xlabel='Channel Age(in Years)'
+                    )
+
+                plt.tight_layout()
+                st.pyplot(fig)
+        else:
+            st.error('No data found for the provided Channel Name/ID. Please check the Name/ID and try again.')
     else:
-        st.error('No data found for the provided Channel Name/ID. Please check the Name/ID and try again.')
+        st.warning("No channel data to display. Please add channels first.")
 else:
     st.warning('Please click the Button above 👆!')
