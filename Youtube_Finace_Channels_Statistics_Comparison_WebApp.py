@@ -7,7 +7,7 @@ from datetime import datetime
 import requests
 
 # Use the YouTube API key
-api_key = 'AIzaSyBvVHqveFW4FLUuk4lh2kn8NMAF7t0QsY4'
+api_key = 'AIzaSyAXSesf1gnp1yVRCB5rW0ioTceLT2EB1SE'
 
 # Initial list of channel IDs
 initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',  # Warikoo
