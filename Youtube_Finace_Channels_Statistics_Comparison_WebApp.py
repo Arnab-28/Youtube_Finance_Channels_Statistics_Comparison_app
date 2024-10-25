@@ -48,7 +48,6 @@ def get_channel_id(api_key, channel_name):
         return None
     
     except Exception:
-        st.error('Server is Busy Now! Please try later.')
         return None
 
 # Function to fetch data from YouTube API
@@ -80,7 +79,6 @@ def get_channel_stats(channel_ids):
         return all_data_pd
     
     except Exception as e:
-        st.error('Server is Busy Now! Please try later.')
         return pd.DataFrame()
 
 # Function to plot charts
@@ -234,8 +232,8 @@ if st.button('Get Channel Statistics'):
                 plt.tight_layout()
                 st.pyplot(fig)
         else:
-            st.error('No data found for the provided Channel Name/ID. Please check the Name/ID and try again.')
+            st.error('Server is Busy Now! Please try later.')
     else:
-        st.warning("No channel data to display. Please add channels first.")
+        st.error('Server is Busy Now! Please try later.')
 else:
     st.warning('Please click the Button above 👆!')
