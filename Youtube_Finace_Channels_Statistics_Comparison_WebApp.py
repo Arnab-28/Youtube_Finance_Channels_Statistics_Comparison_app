@@ -123,7 +123,7 @@ if not st.session_state.channel_data.empty:
                                            st.session_state.channel_data['Channel_name'],
                                            default=st.session_state.channel_data['Channel_name'])
 else:
-    return None
+    pass
     #st.warning("No channel data available. Please try again later.")
 
 # Text input for adding a new channel
