@@ -99,8 +99,7 @@ def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
 
     except Exception:
         return None
-        #st.error("Server is busy now! Please try again later.")
-
+      
 # Streamlit app configuration
 st.set_page_config(layout="wide")
 st.title("India's Top YouTube Channels: Data-Driven Insights")
@@ -124,8 +123,7 @@ if not st.session_state.channel_data.empty:
                                            default=st.session_state.channel_data['Channel_name'])
 else:
     pass
-    #st.warning("No channel data available. Please try again later.")
-
+    
 # Text input for adding a new channel
 new_channel_name = st.sidebar.text_input('Add a New Channel Name/ID:')
 new_channel_id = get_channel_id(api_key,new_channel_name)
