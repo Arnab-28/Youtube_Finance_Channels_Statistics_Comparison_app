@@ -7,6 +7,7 @@ from datetime import datetime
 import requests
 from dotenv import load_dotenv
 import os
+import time
 
 load_dotenv()
 
@@ -47,14 +48,17 @@ def get_channel_id(api_key, channel_names):
                 if 'items' in data and len(data['items']) > 0:
                     # Map channel name to channel ID
                     channel_ids[channel_name] = data['items'][0]['snippet']['channelId']  
+            elif response.status_code == 429:  # Handle rate limit error
+                st.sidebar.error("Server is Busy Now! Please wait and try again.")
+                time.sleep(3600)  # Pause before retrying
             else:
-                st.sidebar.error(f'Error fetching data for {channel_name}: {response.status_code}')
+                st.sidebar.error('Failed to fetch channel details! Please try again later!')
         except Exception as e:
-            st.sidebar.error(f'Exception for {channel_name}: {str(e)}')
+            st.sidebar.error('Server is Busy Now! Please try again later!')
     return channel_ids
 
 @st.cache_data(ttl=3600)  # Cache the data for one hour
-def get_channel_stats(channel_ids):
+def get_channel_stats(api_key,channel_ids):
     """Fetch data from YouTube API for the given channel IDs in batches."""
     try:
         youtube = build('youtube', 'v3', developerKey=api_key)
@@ -74,16 +78,16 @@ def get_channel_stats(channel_ids):
                     'Joinning_Date': item['snippet']['publishedAt'].split('T')[0]
                 })
    
-        all_data_pd = pd.DataFrame(all_data)
-        all_data_pd['Joinning_Date'] = pd.to_datetime(all_data_pd['Joinning_Date'])
-        all_data_pd['Total_Subscribers_in_Thousand'] = all_data_pd['Total_Subscribers'] / 1000
-        all_data_pd['Total_Views_in_Lakh'] = all_data_pd['Total_Views'] / 100000
-        all_data_pd['Age'] = round((datetime.now() - all_data_pd['Joinning_Date']).dt.days / 365, 2)
+        all_data_df = pd.DataFrame(all_data)
+        all_data_df['Joinning_Date'] = pd.to_datetime(all_data_df['Joinning_Date'])
+        all_data_df['Total_Subscribers_in_Thousand'] = all_data_df['Total_Subscribers'] / 1000
+        all_data_df['Total_Views_in_Lakh'] = all_data_df['Total_Views'] / 100000
+        all_data_df['Age'] = round((datetime.now() - all_data_df['Joinning_Date']).dt.days / 365, 2)
 
-        return all_data_pd
+        return all_data_df
     
     except Exception as e:
-        st.error(f"Error fetching channel stats: {e}")
+        st.error("Failed to fetch channel statistics! Please try again later!")
         return pd.DataFrame()
 
 def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
@@ -102,7 +106,7 @@ def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
             ax.bar_label(container, fmt='%.2f', color='white', fontsize=10)
 
     except Exception as e:
-        st.error(f"Error plotting data: {e}")
+        st.error("Please try again later!")
       
 # Streamlit app configuration
 st.set_page_config(layout="wide")
@@ -116,9 +120,10 @@ st.sidebar.title('Channel Management')
 if 'channel_ids' not in st.session_state:
     st.session_state.channel_ids = initial_channel_ids
 if 'channel_data' not in st.session_state:
-    st.session_state.channel_data = get_channel_stats(st.session_state.channel_ids)
-    if st.session_state.channel_data.empty:
-        st.session_state.channel_data = pd.DataFrame()  # Ensure a DataFrame even if data is missing
+    with st.spinner("Fetching initial data..."):
+        st.session_state.channel_data = get_channel_stats(st.session_state.channel_ids)
+        if st.session_state.channel_data.empty:
+            st.session_state.channel_data = pd.DataFrame()  # Ensure a DataFrame even if data is missing
 
 # Multiselect for filtering channels
 if not st.session_state.channel_data.empty:
@@ -128,15 +133,17 @@ if not st.session_state.channel_data.empty:
 
 # Text input for adding a new channel
 new_channel_name = st.sidebar.text_input('Add a New Channel Name/ID:')
-if new_channel_name:
+if new_channel_name and len(new_channel_name) == 24:
+    new_channel_id = new_channel_name
+else:
     new_channel_ids = get_channel_id(api_key, [new_channel_name])
     new_channel_id = new_channel_ids.get(new_channel_name)
 
 if st.sidebar.button('Add Channel'):
-    if new_channel_id and new_channel_id not in st.session_state.channel_ids:
+    if new_channel_id not in st.session_state.channel_ids:
         # Append new channel ID and fetch its data
         st.session_state.channel_ids.append(new_channel_id)
-        new_channel_data = get_channel_stats([new_channel_id])
+        new_channel_data = get_channel_stats(api_key,[new_channel_id])
         if not new_channel_data.empty:
             # Update the global dataframe
             st.session_state.channel_data = pd.concat([st.session_state.channel_data, new_channel_data], ignore_index=True)
