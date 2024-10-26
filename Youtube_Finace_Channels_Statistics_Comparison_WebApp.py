@@ -25,7 +25,7 @@ initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',  # Warikoo
                         'UCtnItzU7q_bA1eoEBjqcVrw',  # Shankar Nath
                         'UCqW8jxh4tH1Z1sWPbkGWL4g']  # Akshat Shrivastava                      
 
-@st.cache_data
+@st.cache_data(ttl=3600)  # Cache the data for one hour
 def get_channel_id(api_key, channel_names):
     """Fetch the YouTube channel ID for the given channel name."""
     channel_ids = {}
@@ -53,7 +53,7 @@ def get_channel_id(api_key, channel_names):
             st.sidebar.error(f'Exception for {channel_name}: {str(e)}')
     return channel_ids
 
-@st.cache_data
+@st.cache_data(ttl=3600)  # Cache the data for one hour
 def get_channel_stats(channel_ids):
     """Fetch data from YouTube API for the given channel IDs in batches."""
     try:
