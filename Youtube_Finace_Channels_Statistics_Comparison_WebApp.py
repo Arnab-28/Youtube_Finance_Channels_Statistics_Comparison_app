@@ -25,8 +25,11 @@ initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',  # Warikoo
                         'UCtnItzU7q_bA1eoEBjqcVrw',  # Shankar Nath
                         'UCqW8jxh4tH1Z1sWPbkGWL4g']  # Akshat Shrivastava                      
 
-def get_channel_id(api_key, channel_name):
+@st.cache_data
+def get_channel_id(api_key, channel_names):
     """Fetch the YouTube channel ID for the given channel name."""
+  channel_ids = {}
+  for channel_name in channel_names:
     try:
         base_url = "https://www.googleapis.com/youtube/v3/search"
         # Parameters for the request
@@ -38,18 +41,19 @@ def get_channel_id(api_key, channel_name):
                 }
         # Making the API request
         response = requests.get(base_url, params=params)
-    
+      
         if response.status_code == 200:
             data = response.json()
             # If channels are found
             if 'items' in data and len(data['items']) > 0:
                 # Getting the first channel ID from the search results
-                return data['items'][0]['snippet']['channelId']    
-        return None
-    
-    except Exception:
-        return None
-
+                channel_ids[channel_name] = data['items'][0]['snippet']['channelId']   
+        else:
+            st.sidebar.error(f'Error fetching data for {channel_name}: {response.status_code}')
+        except Exception as e:
+            st.sidebar.error(f'Exception for {channel_name}: {str(e)}')
+    return channel_ids
+        
 # Function to fetch data from YouTube API
 def get_channel_stats(channel_ids):
     
