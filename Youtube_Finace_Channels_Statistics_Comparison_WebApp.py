@@ -121,7 +121,7 @@ if 'channel_ids' not in st.session_state:
     st.session_state.channel_ids = initial_channel_ids
 if 'channel_data' not in st.session_state:
     with st.spinner("Fetching initial data..."):
-        st.session_state.channel_data = get_channel_stats(st.session_state.channel_ids)
+        st.session_state.channel_data = get_channel_stats(api_key, st.session_state.channel_ids)
         if st.session_state.channel_data.empty:
             st.session_state.channel_data = pd.DataFrame()  # Ensure a DataFrame even if data is missing
 
