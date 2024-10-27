@@ -58,11 +58,9 @@ st.header("Uncover the secrets of India's Finance Youtuber's landscape")
 
 def display_social_icons():
     # Define social media links
-    social_media_links = 
-        {
+    social_media_links = {
             "LinkedIn": "https://www.linkedin.com/in/arnabdas28/",
-            "GitHub": "https://github.com/Arnab-28",
-        }
+            "GitHub": "https://github.com/Arnab-28"}
     
     # Display social media icons and links in sidebar
     for platform, url in social_media_links.items():
