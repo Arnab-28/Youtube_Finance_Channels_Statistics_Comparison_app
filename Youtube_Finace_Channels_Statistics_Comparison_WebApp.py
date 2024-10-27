@@ -163,6 +163,10 @@ def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
 def main():
     # Sidebar setup
     st.sidebar.title('Channel Management')
+
+    # Social media links in the sidebar
+    st.sidebar.header("Contact Me")
+    display_social_icons()  # Call the function to display icons directly in the sidebar
     
     # Using session state to persist channel data
     if 'channel_ids' not in st.session_state:
@@ -296,10 +300,7 @@ def main():
             st.error("No channel data available. Please try fetching the channel statistics again.")
     else:
         st.warning('Please click the Button above 👆!')
-    
-    # Display social media icons
-    display_social_icons()
-
+        
 # Run the app
 if __name__ == "__main__":
     main()
