@@ -56,27 +56,6 @@ st.markdown(
 )
 st.header("Uncover the secrets of India's Finance Youtuber's landscape")
 
-def display_social_icons():
-    # Define social media links
-    social_media_links = {
-            "LinkedIn": "https://www.linkedin.com/in/arnabdas28/",
-            "GitHub": "https://github.com/Arnab-28"}
-    
-    # Create HTML for social media icons
-    social_media_html = f"""
-    <div style="display: flex; justify-content: space-around;">
-        <a href="{social_media_links['LinkedIn']}" target="_blank">
-            <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
-        </a>
-        <a href="{social_media_links['GitHub']}" target="_blank">
-            <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
-        </a>
-    </div>
-    """
-    
-    # Use Streamlit to render the HTML
-    components.html(social_media_html, height=70)
-
 # Initial list of channel IDs
 initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',   # Warikoo
                         'UCwVEhEzsjLym_u1he4XWFkg',  # Finance With Sharan
@@ -167,6 +146,27 @@ def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
     for container in ax.containers:
         ax.bar_label(container, fmt='%.2f', color='white', fontsize=10)
         
+def display_social_icons():
+    # Define social media links
+    social_media_links = {
+            "LinkedIn": "https://www.linkedin.com/in/arnabdas28/",
+            "GitHub": "https://github.com/Arnab-28"}
+    
+    # Create HTML for social media icons
+    social_media_html = f"""
+    <div style="display: flex; justify-content: space-around;">
+        <a href="{social_media_links['LinkedIn']}" target="_blank">
+            <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+        </a>
+        <a href="{social_media_links['GitHub']}" target="_blank">
+            <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
+        </a>
+    </div>
+    """
+    
+    # Use Streamlit to render the HTML
+    components.html(social_media_html, height=70)
+
 # Streamlit app configuration
 
 # Main section for app
