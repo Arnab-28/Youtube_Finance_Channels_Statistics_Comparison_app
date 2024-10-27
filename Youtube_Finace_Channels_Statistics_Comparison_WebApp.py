@@ -155,11 +155,11 @@ def display_social_icons():
     
     # Create HTML for social media icons
     social_media_html = f"""
-    <div style="display: flex; justify-content: space-around;">
-        <a href="{social_media_links['LinkedIn']}" target="_blank">
+    <div style="display: flex; justify-content: space-around;align-items: center;">
+        <a href="{social_media_links['LinkedIn']}" target="_blank" style="margin: 0 5px;">
             <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
         </a>
-        <a href="{social_media_links['GitHub']}" target="_blank">
+        <a href="{social_media_links['GitHub']}" target="_blank" style="margin: 0 5px;">
             <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub"/>
         </a>
     </div>
