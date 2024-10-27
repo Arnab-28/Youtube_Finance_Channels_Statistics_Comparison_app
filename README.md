@@ -1,4 +1,4 @@
-# Indian YouTubers Finance Channels Data Comparison App
+# India's Top Finanace YouTube Channels: Data-Driven Insights
 
 ## Project Objective
 
