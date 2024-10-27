@@ -196,20 +196,22 @@ def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
 def main():
     # Sidebar setup
     st.sidebar.title('Channel Management')
+    
     # Using session state to persist channel data
     if 'channel_ids' not in st.session_state:
         st.session_state.channel_ids = initial_channel_ids
+        
     if 'channel_data' not in st.session_state:
         with st.spinner("Fetching initial data..."):
             st.session_state.channel_data = get_channel_stats(api_key, st.session_state.channel_ids)
-            if st.session_state.channel_data.empty:
-                st.session_state.channel_data = pd.DataFrame()  # Ensure a DataFrame even if data is missing
-
+            
     # Multiselect for filtering channels
     if not st.session_state.channel_data.empty:
         selected_channels = st.sidebar.multiselect('Select Channels to Display:',
                                                     st.session_state.channel_data['Channel_name'],
                                                     default=st.session_state.channel_data['Channel_name'])
+    else:
+        selected_channels = []
 
     # Text input for adding a new channel
     new_channel_name = st.sidebar.text_input('Add a New Channel Name/ID:')
@@ -220,7 +222,7 @@ def main():
         new_channel_id = new_channel_ids.get(new_channel_name)
 
     if st.sidebar.button('Add Channel'):
-        if new_channel_id not in st.session_state.channel_ids:
+        if new_channel_id and new_channel_id not in st.session_state.channel_ids:
             # Append new channel ID and fetch its data
             st.session_state.channel_ids.append(new_channel_id)
             new_channel_data = get_channel_stats(api_key,[new_channel_id])
@@ -235,14 +237,14 @@ def main():
         else:
             st.sidebar.error('Please enter a valid Channel Name/ID.')
 
-        # Sidebar for chart selection
+    # Sidebar for chart selection
     chart_option = st.sidebar.radio("Choose the chart to display:",
                                     ('All Charts', 
                                      'Total Subscribers (in Thousands)', 
                                      'Total Views (in Lakh)', 
                                      'Total Videos', 
                                      'Age (Years)'))
-
+    
     if st.button('Get Channel Statistics'):
         if not st.session_state.channel_data.empty:
             channel_info = st.session_state.channel_data[st.session_state.channel_data['Channel_name'].isin(selected_channels)]
