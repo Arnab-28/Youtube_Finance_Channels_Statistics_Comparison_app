@@ -11,18 +11,6 @@ import time
 # Use the YouTube API key
 api_key = st.secrets["api_key"]
 
-# Initial list of channel IDs
-initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',  # Warikoo
-                        'UCwVEhEzsjLym_u1he4XWFkg',  # Finance With Sharan
-                        'UCwAdQUuPT6laN-AQR17fe1g',  # Pranjal Kamra
-                        'UCdvOCtR3a9ICLAw0DD3DpXg',  # bekifaayati
-                        'UCzUgCORf79EjqlNHmGRHFkA',  # Neha Nagar
-                        'UCe3qdG0A_gr-sEdat5y2twQ',  # CA Rachana Phadke Ranade
-                        'UCWHCXSKASuSzao_pplQ7SPw',  # Invest Aaj For Kal
-                        'UCVOTBwF0vnSxMRIbfSE_K_g',  # Labour Law Advisor
-                        'UCtnItzU7q_bA1eoEBjqcVrw',  # Shankar Nath
-                        'UCqW8jxh4tH1Z1sWPbkGWL4g']  # Akshat Shrivastava                      
-
 # Set up responsive layout with Streamlit
 st.set_page_config(layout="wide")
 st.title("India's Top Finanace YouTube Channels: Data-Driven Insights")
@@ -66,6 +54,18 @@ st.markdown(
     unsafe_allow_html=True,
 )
 st.header("Uncover the secrets of India's Finance Youtuber's landscape")
+
+# Initial list of channel IDs
+initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',  # Warikoo
+                        'UCwVEhEzsjLym_u1he4XWFkg',  # Finance With Sharan
+                        'UCwAdQUuPT6laN-AQR17fe1g',  # Pranjal Kamra
+                        'UCdvOCtR3a9ICLAw0DD3DpXg',  # bekifaayati
+                        'UCzUgCORf79EjqlNHmGRHFkA',  # Neha Nagar
+                        'UCe3qdG0A_gr-sEdat5y2twQ',  # CA Rachana Phadke Ranade
+                        'UCWHCXSKASuSzao_pplQ7SPw',  # Invest Aaj For Kal
+                        'UCVOTBwF0vnSxMRIbfSE_K_g',  # Labour Law Advisor
+                        'UCtnItzU7q_bA1eoEBjqcVrw',  # Shankar Nath
+                        'UCqW8jxh4tH1Z1sWPbkGWL4g']  # Akshat Shrivastava                      
 
 @st.cache_data(ttl=3600)  # Cache the data for one hour
 def get_channel_id(api_key, channel_names):
