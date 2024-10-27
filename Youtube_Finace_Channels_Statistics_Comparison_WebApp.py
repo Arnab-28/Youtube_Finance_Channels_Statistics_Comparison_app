@@ -131,11 +131,6 @@ def get_channel_stats(api_key,channel_ids):
         st.error("Failed to fetch channel statistics! Please try again later!")
         return pd.DataFrame()
 
-# Sidebar setup for chart size control
-st.sidebar.title('Chart Settings')
-chart_width = st.sidebar.slider("Chart Width", min_value=10, max_value=25, value=14, step=1)
-chart_height = st.sidebar.slider("Chart Height", min_value=6, max_value=15, value=10, step=1)
-
 def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
     """Plot bar chart with values."""
     sns.barplot(y=y_col, x=x_col, data=data, ax=ax, palette='viridis')
