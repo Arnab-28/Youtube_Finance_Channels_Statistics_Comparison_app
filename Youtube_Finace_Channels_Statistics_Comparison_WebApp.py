@@ -131,9 +131,17 @@ def get_channel_stats(api_key,channel_ids):
         st.error("Failed to fetch channel statistics! Please try again later!")
         return pd.DataFrame()
 
+# Sidebar setup
+st.sidebar.title("Chart Settings")
+
+# Add a slider for adjusting the chart size
+chart_width = st.sidebar.slider("Chart Width", min_value=8, max_value=20, value=12, step=1)
+chart_height = st.sidebar.slider("Chart Height", min_value=5, max_value=15, value=8, step=1)
+
 def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
     """Plot bar chart with values."""
     try:
+        fig, ax = plt.subplots(figsize=(chart_width, chart_height), facecolor="black")
         sns.barplot(y=y_col, x=x_col, data=data, ax=ax, palette='viridis')
         ax.set_title(title, color='white')
         ax.set_xlabel(xlabel, color='white')
@@ -145,7 +153,9 @@ def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
         # Add data labels to each bar
         for container in ax.containers:
             ax.bar_label(container, fmt='%.2f', color='white', fontsize=10)
-
+            
+        st.pyplot(fig)
+        
     except Exception as e:
         st.error("Please try again later!")
       
