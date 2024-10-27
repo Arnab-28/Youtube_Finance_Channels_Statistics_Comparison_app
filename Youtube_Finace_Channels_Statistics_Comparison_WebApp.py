@@ -67,39 +67,6 @@ def display_social_icons():
         unsafe_allow_html=True
     )
 
-def display_social_icons():
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.markdown(
-            """
-            <a href="https://www.linkedin.com/in/arnabdas28/" target="_blank">
-                <img src="https://img.icons8.com/color/48/000000/linkedin.png" alt="LinkedIn">
-            </a>
-            """,
-            unsafe_allow_html=True
-        )
-
-    with col2:
-        st.markdown(
-            """
-            <a href="https://github.com/Arnab-28" target="_blank">
-                <img src="https://img.icons8.com/ios-glyphs/48/000000/github.png" alt="GitHub">
-            </a>
-            """,
-            unsafe_allow_html=True
-        )
-
-    with col3:
-        st.markdown(
-            """
-            <a href="mailto:arnabrahuldas28@gmail.com" target="_blank">
-                <img src="https://img.icons8.com/fluency/48/000000/gmail-new.png" alt="Email">
-            </a>
-            """,
-            unsafe_allow_html=True
-        )
-
 # Initial list of channel IDs
 initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',   # Warikoo
                         'UCwVEhEzsjLym_u1he4XWFkg',  # Finance With Sharan
