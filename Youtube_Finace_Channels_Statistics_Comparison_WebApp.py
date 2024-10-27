@@ -7,6 +7,7 @@ from datetime import datetime
 import requests
 import os
 import time
+import webbrowser
 
 # Use the YouTube API key
 api_key = st.secrets["api_key"]
@@ -56,17 +57,20 @@ st.markdown(
 st.header("Uncover the secrets of India's Finance Youtuber's landscape")
 
 def display_social_icons():
-    st.markdown(
-        """
-        <div style="text-align: center; margin-top: 20px;">
-            <a href="https://www.linkedin.com/in/arnabdas28/" target="_blank">🌐 LinkedIn</a> &nbsp; | &nbsp;
-            <a href="https://github.com/Arnab-28" target="_blank">🐙 GitHub</a> &nbsp; | &nbsp;
-            <a href="mailto:arnabrahuldas28@gmail.com" target="_blank">📧 Email</a>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
+    # Define social media links
+    social_media_links = 
+        {
+            "LinkedIn": "https://www.linkedin.com/in/arnabdas28/",
+            "GitHub": "https://github.com/Arnab-28",
+        }
+    
+    # Display social media icons and links in sidebar
+    for platform, url in social_media_links.items():
+        if platform == "LinkedIn":
+            st.sidebar.markdown(f"[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)]({url})")
+        elif platform == "GitHub":
+            st.sidebar.markdown(f"[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)]({url})")
+       
 # Initial list of channel IDs
 initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',   # Warikoo
                         'UCwVEhEzsjLym_u1he4XWFkg',  # Finance With Sharan
