@@ -275,7 +275,7 @@ def main():
                             )
 
                     elif chart_option == 'Total Videos':
-                            plot_bar_chart_with_values(
+                        plot_bar_chart_with_values(
                             data=channel_info, ax=axes,
                             x_col='Total_Videos', y_col='Channel_name',
                             title='Total Videos Vs. Channel_name ', xlabel='Total Videos'
