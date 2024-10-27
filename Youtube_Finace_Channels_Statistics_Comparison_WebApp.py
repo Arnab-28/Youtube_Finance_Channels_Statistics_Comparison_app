@@ -131,24 +131,25 @@ def get_channel_stats(api_key,channel_ids):
         st.error("Failed to fetch channel statistics! Please try again later!")
         return pd.DataFrame()
 
+# Sidebar setup for chart size control
+st.sidebar.title('Chart Settings')
+chart_width = st.sidebar.slider("Chart Width", min_value=10, max_value=25, value=14, step=1)
+chart_height = st.sidebar.slider("Chart Height", min_value=6, max_value=15, value=10, step=1)
+
 def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
     """Plot bar chart with values."""
-    try:
-        sns.barplot(y=y_col, x=x_col, data=data, ax=ax, palette='viridis')
-        ax.set_title(title, color='white')
-        ax.set_xlabel(xlabel, color='white')
-        ax.set_ylabel('', color='white')
-        ax.set_facecolor('black')
-        ax.tick_params(axis='x', colors='white')
-        ax.tick_params(axis='y', colors='white')
+    sns.barplot(y=y_col, x=x_col, data=data, ax=ax, palette='viridis')
+    ax.set_title(title, color='white')
+    ax.set_xlabel(xlabel, color='white')
+    ax.set_ylabel('', color='white')
+    ax.set_facecolor('black')
+    ax.tick_params(axis='x', colors='white')
+    ax.tick_params(axis='y', colors='white')
 
-        # Add data labels to each bar
-        for container in ax.containers:
-            ax.bar_label(container, fmt='%.2f', color='white', fontsize=10)
-            
-    except Exception as e:
-        st.error("Please try again later!")
-      
+    # Add data labels to each bar
+    for container in ax.containers:
+        ax.bar_label(container, fmt='%.2f', color='white', fontsize=10)
+        
 # Streamlit app configuration
 
 # Sidebar setup
@@ -208,12 +209,12 @@ if st.button('Get Channel Statistics'):
         if not channel_info.empty:
             st.subheader('Channel Details')
             st.dataframe(channel_info)
-        
-            fig, axes = plt.subplots(2, 2, figsize=(14, 10), facecolor='black')
-
+            
             # Display all charts or a specific chart based on user selection
             if chart_option == 'All Charts':
                 # Create a 2x2 grid for displaying all charts
+                fig, axes = plt.subplots(2, 2, figsize=(14, 10), facecolor='black')
+                
                 plot_bar_chart_with_values(
                     data=channel_info, ax=axes[0, 0],
                     x_col='Total_Subscribers_in_Thousand', y_col='Channel_name',
@@ -248,7 +249,7 @@ if st.button('Get Channel Statistics'):
 
             else:
             # Create a single chart based on the user selection
-                fig, axes = plt.subplots(figsize=(10, 6), facecolor='black')
+                fig, axes = plt.subplots(figsize=(chart_width, chart_height), facecolor='black')
 
                 if chart_option == 'Total Subscribers (in Thousands)':
                     plot_bar_chart_with_values(
