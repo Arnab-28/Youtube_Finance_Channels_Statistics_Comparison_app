@@ -8,6 +8,7 @@ import requests
 import os
 import time
 import webbrowser
+import streamlit.components.v1 as components
 
 # Use the YouTube API key
 api_key = st.secrets["api_key"]
