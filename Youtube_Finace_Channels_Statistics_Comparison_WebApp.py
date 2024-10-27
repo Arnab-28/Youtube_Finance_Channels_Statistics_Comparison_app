@@ -23,6 +23,50 @@ initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',  # Warikoo
                         'UCtnItzU7q_bA1eoEBjqcVrw',  # Shankar Nath
                         'UCqW8jxh4tH1Z1sWPbkGWL4g']  # Akshat Shrivastava                      
 
+# Set up responsive layout with Streamlit
+st.set_page_config(layout="wide")
+st.title("India's Top Finanace YouTube Channels: Data-Driven Insights")
+st.markdown(
+    """
+    <style>
+    /* Adjust the sidebar and main content widths for responsiveness */
+    [data-testid="stSidebar"] {
+        width: 250px;
+    }
+    [data-testid="stAppViewContainer"] {
+        padding: 1rem;
+    }
+    /* Font sizes for different screen sizes */
+    h1 {
+        font-size: calc(1.5em + 1vw);
+    }
+    .big-font {
+        font-size: calc(1em + 0.8vw);
+    }
+    /* Responsive charts */
+    .chart-container {
+        width: 100%;
+        height: auto;
+    }
+    /* Responsive sidebar adjustments */
+    @media (max-width: 768px) {
+        [data-testid="stSidebar"] {
+            width: 100px;
+            font-size: 0.8em;
+        }
+        h1 {
+            font-size: 1.5em;
+        }
+        .big-font {
+            font-size: 1em;
+        }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+st.header("Uncover the secrets of India's Finance Youtuber's landscape")
+
 @st.cache_data(ttl=3600)  # Cache the data for one hour
 def get_channel_id(api_key, channel_names):
     """Fetch the YouTube channel ID for the given channel name."""
@@ -106,48 +150,6 @@ def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
         st.error("Please try again later!")
       
 # Streamlit app configuration
-st.set_page_config(layout="wide")
-st.title("India's Top Finanace YouTube Channels: Data-Driven Insights")
-st.markdown(
-    """
-    <style>
-    /* Adjust the sidebar and main content widths for responsiveness */
-    [data-testid="stSidebar"] {
-        width: 250px;
-    }
-    [data-testid="stAppViewContainer"] {
-        padding: 1rem;
-    }
-    /* Font sizes for different screen sizes */
-    h1 {
-        font-size: calc(1.5em + 1vw);
-    }
-    .big-font {
-        font-size: calc(1em + 0.8vw);
-    }
-    /* Responsive charts */
-    .chart-container {
-        width: 100%;
-        height: auto;
-    }
-    /* Responsive sidebar adjustments */
-    @media (max-width: 768px) {
-        [data-testid="stSidebar"] {
-            width: 100px;
-            font-size: 0.8em;
-        }
-        h1 {
-            font-size: 1.5em;
-        }
-        .big-font {
-            font-size: 1em;
-        }
-    }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
-st.header("Uncover the secrets of India's Finance Youtuber's landscape")
 
 # Sidebar setup
 st.sidebar.title('Channel Management')
