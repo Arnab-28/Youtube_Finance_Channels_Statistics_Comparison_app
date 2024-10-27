@@ -62,13 +62,21 @@ def display_social_icons():
             "LinkedIn": "https://www.linkedin.com/in/arnabdas28/",
             "GitHub": "https://github.com/Arnab-28"}
     
-    # Display social media icons and links in sidebar
-    for platform, url in social_media_links.items():
-        if platform == "LinkedIn":
-            st.sidebar.markdown(f"[![LinkedIn](https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)]({url})")
-        elif platform == "GitHub":
-            st.sidebar.markdown(f"[![GitHub](https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white)]({url})")
-       
+    # Create HTML for social media icons
+    social_media_html = f"""
+    <div style="display: flex; justify-content: space-around;">
+        <a href="{social_media_links['LinkedIn']}" target="_blank">
+            <img src="https://img.shields.io/badge/LinkedIn-0077B5?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn" />
+        </a>
+        <a href="{social_media_links['GitHub']}" target="_blank">
+            <img src="https://img.shields.io/badge/GitHub-181717?style=for-the-badge&logo=github&logoColor=white" alt="GitHub" />
+        </a>
+    </div>
+    """
+    
+    # Use Streamlit to render the HTML
+    components.html(social_media_html, height=70)
+
 # Initial list of channel IDs
 initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',   # Warikoo
                         'UCwVEhEzsjLym_u1he4XWFkg',  # Finance With Sharan
