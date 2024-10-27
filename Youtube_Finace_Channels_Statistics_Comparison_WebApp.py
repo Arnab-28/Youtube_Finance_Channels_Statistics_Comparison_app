@@ -108,6 +108,45 @@ def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
 # Streamlit app configuration
 st.set_page_config(layout="wide")
 st.title("India's Top YouTube Channels: Data-Driven Insights")
+st.markdown(
+    """
+    <style>
+    /* Adjust the sidebar and main content widths for responsiveness */
+    [data-testid="stSidebar"] {
+        width: 250px;
+    }
+    [data-testid="stAppViewContainer"] {
+        padding: 1rem;
+    }
+    /* Font sizes for different screen sizes */
+    h1 {
+        font-size: calc(1.5em + 1vw);
+    }
+    .big-font {
+        font-size: calc(1em + 0.8vw);
+    }
+    /* Responsive charts */
+    .chart-container {
+        width: 100%;
+        height: auto;
+    }
+    /* Responsive sidebar adjustments */
+    @media (max-width: 768px) {
+        [data-testid="stSidebar"] {
+            width: 100px;
+            font-size: 0.8em;
+        }
+        h1 {
+            font-size: 1.5em;
+        }
+        .big-font {
+            font-size: 1em;
+        }
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 st.header("Uncover the secrets of India's Finance Youtuber's landscape")
 
 # Sidebar setup
