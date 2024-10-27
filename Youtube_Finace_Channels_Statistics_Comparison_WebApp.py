@@ -101,7 +101,7 @@ def display_social_icons():
         )
 
 # Initial list of channel IDs
-initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',  # Warikoo
+initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',   # Warikoo
                         'UCwVEhEzsjLym_u1he4XWFkg',  # Finance With Sharan
                         'UCwAdQUuPT6laN-AQR17fe1g',  # Pranjal Kamra
                         'UCdvOCtR3a9ICLAw0DD3DpXg',  # bekifaayati
@@ -193,92 +193,92 @@ def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
 # Streamlit app configuration
 
 # Sidebar setup
-st.sidebar.title('Channel Management')
-display_social_icons()
+def main():
+    st.sidebar.title('Channel Management')
+    display_social_icons()
+    # Using session state to persist channel data
+    if 'channel_ids' not in st.session_state:
+        st.session_state.channel_ids = initial_channel_ids
+    if 'channel_data' not in st.session_state:
+        with st.spinner("Fetching initial data..."):
+            st.session_state.channel_data = get_channel_stats(api_key, st.session_state.channel_ids)
+            if st.session_state.channel_data.empty:
+                st.session_state.channel_data = pd.DataFrame()  # Ensure a DataFrame even if data is missing
 
-# Using session state to persist channel data
-if 'channel_ids' not in st.session_state:
-    st.session_state.channel_ids = initial_channel_ids
-if 'channel_data' not in st.session_state:
-    with st.spinner("Fetching initial data..."):
-        st.session_state.channel_data = get_channel_stats(api_key, st.session_state.channel_ids)
-        if st.session_state.channel_data.empty:
-            st.session_state.channel_data = pd.DataFrame()  # Ensure a DataFrame even if data is missing
-
-# Multiselect for filtering channels
-if not st.session_state.channel_data.empty:
-    selected_channels = st.sidebar.multiselect('Select Channels to Display:',
+    # Multiselect for filtering channels
+    if not st.session_state.channel_data.empty:
+        selected_channels = st.sidebar.multiselect('Select Channels to Display:',
                                            st.session_state.channel_data['Channel_name'],
                                            default=st.session_state.channel_data['Channel_name'])
 
-# Text input for adding a new channel
-new_channel_name = st.sidebar.text_input('Add a New Channel Name/ID:')
-if new_channel_name and len(new_channel_name) == 24:
-    new_channel_id = new_channel_name
-else:
-    new_channel_ids = get_channel_id(api_key, [new_channel_name])
-    new_channel_id = new_channel_ids.get(new_channel_name)
-
-if st.sidebar.button('Add Channel'):
-    if new_channel_id not in st.session_state.channel_ids:
-        # Append new channel ID and fetch its data
-        st.session_state.channel_ids.append(new_channel_id)
-        new_channel_data = get_channel_stats(api_key,[new_channel_id])
-        if not new_channel_data.empty:
-            # Update the global dataframe
-            st.session_state.channel_data = pd.concat([st.session_state.channel_data, new_channel_data], ignore_index=True)
-            st.sidebar.success(f'Channel "{new_channel_name}" added and data updated!')
-        else:
-            st.sidebar.error('Failed to retrieve data for the new channel.')
-    elif new_channel_id in st.session_state.channel_ids:
-        st.sidebar.warning('Channel already exists in the list.')
+    # Text input for adding a new channel
+    new_channel_name = st.sidebar.text_input('Add a New Channel Name/ID:')
+    if new_channel_name and len(new_channel_name) == 24:
+        new_channel_id = new_channel_name
     else:
-        st.sidebar.error('Please enter a valid Channel Name/ID.')
+        new_channel_ids = get_channel_id(api_key, [new_channel_name])
+        new_channel_id = new_channel_ids.get(new_channel_name)
 
-# Sidebar for chart selection
-chart_option = st.sidebar.radio("Choose the chart to display:",
-                                ('All Charts', 
-                                 'Total Subscribers (in Thousands)', 
-                                 'Total Views (in Lakh)', 
-                                 'Total Videos', 
-                                 'Age (Years)')
-                                )
+    if st.sidebar.button('Add Channel'):
+        if new_channel_id not in st.session_state.channel_ids:
+            # Append new channel ID and fetch its data
+            st.session_state.channel_ids.append(new_channel_id)
+            new_channel_data = get_channel_stats(api_key,[new_channel_id])
+            if not new_channel_data.empty:
+                # Update the global dataframe
+                st.session_state.channel_data = pd.concat([st.session_state.channel_data, new_channel_data], ignore_index=True)
+                st.sidebar.success(f'Channel "{new_channel_name}" added and data updated!')
+            else:
+                st.sidebar.error('Failed to retrieve data for the new channel.')
+        elif new_channel_id in st.session_state.channel_ids:
+            st.sidebar.warning('Channel already exists in the list.')
+        else:
+            st.sidebar.error('Please enter a valid Channel Name/ID.')
 
-if st.button('Get Channel Statistics'):
-    if not st.session_state.channel_data.empty:
-        channel_info = st.session_state.channel_data[st.session_state.channel_data['Channel_name'].isin(selected_channels)]
-        if not channel_info.empty:
-            st.subheader('Channel Details')
-            st.dataframe(channel_info)
+        # Sidebar for chart selection
+    chart_option = st.sidebar.radio("Choose the chart to display:",
+                                    ('All Charts', 
+                                     'Total Subscribers (in Thousands)', 
+                                     'Total Views (in Lakh)', 
+                                     'Total Videos', 
+                                     'Age (Years)')
+                                    )
+
+    if st.button('Get Channel Statistics'):
+        if not st.session_state.channel_data.empty:
+            channel_info = st.session_state.channel_data[st.session_state.channel_data['Channel_name'].isin(selected_channels)]
+            if not channel_info.empty:
+                st.subheader('Channel Details')
+                st.dataframe(channel_info)
             
-            # Display all charts or a specific chart based on user selection
-            if chart_option == 'All Charts':
-                # Create a 2x2 grid for displaying all charts
-                fig, axes = plt.subplots(2, 2, figsize=(14, 10), facecolor='black')
+                # Display all charts or a specific chart based on user selection
+                if chart_option == 'All Charts':
+                    # Create a 2x2 grid for displaying all charts
+                    fig, axes = plt.subplots(2, 2, figsize=(14, 10), facecolor='black')
                 
-                plot_bar_chart_with_values(
-                    data=channel_info, ax=axes[0, 0],
-                    x_col='Total_Subscribers_in_Thousand', y_col='Channel_name',
-                    title='Total Subscribers (in Thousands) Vs. Channel_name', xlabel='Total Subscribers (in Thousands)'
-                )
+                    plot_bar_chart_with_values(
+                        data=channel_info, ax=axes[0, 0],
+                        x_col='Total_Subscribers_in_Thousand', y_col='Channel_name',
+                        title='Total Subscribers (in Thousands) Vs. Channel_name', xlabel='Total Subscribers (in Thousands)'
+                    )
 
-                plot_bar_chart_with_values(
-                    data=channel_info, ax=axes[0, 1],
-                    x_col='Total_Views_in_Lakh', y_col='Channel_name',
-                    title='Total Views (in Lakh) Vs. Channel_name', xlabel='Total Views (in Lakh)'
-                )
+                    plot_bar_chart_with_values(
+                        data=channel_info, ax=axes[0, 1],
+                        x_col='Total_Views_in_Lakh', y_col='Channel_name',
+                        title='Total Views (in Lakh) Vs. Channel_name', xlabel='Total Views (in Lakh)'
+                    )
 
-                plot_bar_chart_with_values(
-                    data=channel_info, ax=axes[1, 0],
-                    x_col='Total_Videos', y_col='Channel_name',
-                    title='Total Videos Vs. Channel_name', xlabel='Total Videos'
-                )
+                    plot_bar_chart_with_values(
+                        data=channel_info, ax=axes[1, 0],
+                        x_col='Total_Videos', y_col='Channel_name',
+                        title='Total Videos Vs. Channel_name', xlabel='Total Videos'
+                    )
 
-                plot_bar_chart_with_values(
-                    data=channel_info, ax=axes[1, 1],
-                    x_col='Age', y_col='Channel_name',
-                    title='Channel Age (in Years) Vs. Channel_name', xlabel='Channel Age (in Years)'
-                )
+                    plot_bar_chart_with_values(
+                        data=channel_info, ax=axes[1, 1],
+                        x_col='Age', y_col='Channel_name',
+                        title='Channel Age (in Years) Vs. Channel_name', xlabel='Channel Age (in Years)'
+                    )
 
                 plt.subplots_adjust(hspace=0.3, wspace=0.3)
 
