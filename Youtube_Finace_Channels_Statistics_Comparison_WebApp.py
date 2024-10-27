@@ -58,43 +58,47 @@ st.header("Uncover the secrets of India's Finance Youtuber's landscape")
 def display_social_icons():
     st.markdown(
         """
-        <style>
-        .icon-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        .icon-container a {
-            color: inherit;
-            text-decoration: none;
-        }
-        .icon-container i {
-            font-size: 30px;
-        }
-        </style>
-        """,
-        unsafe_allow_html=True,
-    )
-
-    # Display the icons using Markdown with links
-    st.markdown(
-        """
-        <div class="icon-container">
-            <a href="https://www.linkedin.com/in/arnabdas28/" target="_blank">
-                <img src="https://img.icons8.com/color/48/000000/linkedin.png"/>
-            </a>
-            <a href="https://github.com/Arnab-28" target="_blank">
-                <img src="https://img.icons8.com/ios-glyphs/48/000000/github.png"/>
-            </a>
-            <a href="mailto:arnabrahuldas28@gmail.com" target="_blank">
-                <img src="https://img.icons8.com/fluency/48/000000/gmail-new.png"/>
-            </a>
+        <div style="text-align: center; margin-top: 20px;">
+            <a href="https://www.linkedin.com/in/arnabdas28/" target="_blank">🌐 LinkedIn</a> &nbsp; | &nbsp;
+            <a href="https://github.com/Arnab-28" target="_blank">🐙 GitHub</a> &nbsp; | &nbsp;
+            <a href="mailto:arnabrahuldas28@gmail.com" target="_blank">📧 Email</a>
         </div>
         """,
-        unsafe_allow_html=True,
+        unsafe_allow_html=True
     )
 
+def display_social_icons():
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.markdown(
+            """
+            <a href="https://www.linkedin.com/in/arnabdas28/" target="_blank">
+                <img src="https://img.icons8.com/color/48/000000/linkedin.png" alt="LinkedIn">
+            </a>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with col2:
+        st.markdown(
+            """
+            <a href="https://github.com/Arnab-28" target="_blank">
+                <img src="https://img.icons8.com/ios-glyphs/48/000000/github.png" alt="GitHub">
+            </a>
+            """,
+            unsafe_allow_html=True
+        )
+
+    with col3:
+        st.markdown(
+            """
+            <a href="mailto:arnabrahuldas28@gmail.com" target="_blank">
+                <img src="https://img.icons8.com/fluency/48/000000/gmail-new.png" alt="Email">
+            </a>
+            """,
+            unsafe_allow_html=True
+        )
 
 # Initial list of channel IDs
 initial_channel_ids = ['UCRzYN32xtBf3Yxsx5BvJWJw',  # Warikoo
@@ -190,6 +194,7 @@ def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
 
 # Sidebar setup
 st.sidebar.title('Channel Management')
+display_social_icons()
 
 # Using session state to persist channel data
 if 'channel_ids' not in st.session_state:
