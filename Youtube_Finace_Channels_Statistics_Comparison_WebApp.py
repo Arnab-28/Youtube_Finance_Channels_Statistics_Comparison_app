@@ -282,3 +282,43 @@ if st.button('Get Channel Statistics'):
         st.error("No channel data available. Please try fetching the channel statistics again.")
 else:
     st.warning('Please click the Button above 👆!')
+
+def display_social_icons():
+    st.markdown(
+        """
+        <style>
+        .icon-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .icon-container a {
+            color: inherit;
+            text-decoration: none;
+        }
+        .icon-container i {
+            font-size: 30px;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # Display the icons using Markdown with links
+    st.markdown(
+        """
+        <div class="icon-container">
+            <a href="https://www.linkedin.com/in/arnabdas28/" target="_blank">
+                <img src="https://img.icons8.com/color/48/000000/linkedin.png"/>
+            </a>
+            <a href="https://github.com/Arnab-28" target="_blank">
+                <img src="https://img.icons8.com/ios-glyphs/48/000000/github.png"/>
+            </a>
+            <a href="mailto:arnabrahuldas28@gmail.com" target="_blank">
+                <img src="https://img.icons8.com/fluency/48/000000/gmail-new.png"/>
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
