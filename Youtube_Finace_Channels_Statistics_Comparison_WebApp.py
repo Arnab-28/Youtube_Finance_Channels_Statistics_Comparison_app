@@ -107,7 +107,7 @@ def plot_bar_chart_with_values(data, ax, x_col, y_col, title, xlabel):
       
 # Streamlit app configuration
 st.set_page_config(layout="wide")
-st.title("India's Top YouTube Channels: Data-Driven Insights")
+st.title("India's Top Finanace YouTube Channels: Data-Driven Insights")
 st.markdown(
     """
     <style>
