@@ -167,7 +167,7 @@ def display_social_icons():
     """
     
     # Use Streamlit to render the HTML in the sidebar
-    components.html(social_media_html, height=70)
+    st.sidebar.markdown(social_media_html, unsafe_allow_html=True)
 
 # Streamlit app configuration
 
