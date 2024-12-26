@@ -5,7 +5,6 @@ import seaborn as sns
 import streamlit as st
 from datetime import datetime
 import requests
-import os
 import time
 import webbrowser
 import streamlit.components.v1 as components
