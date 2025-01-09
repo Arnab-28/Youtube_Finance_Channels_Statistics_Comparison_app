@@ -89,4 +89,7 @@ Git
 
 The YouTube Channel Information App is a powerful tool for anyone looking to analyze and compare YouTube channels' performance using up-to-date data. Its interactive and dynamic features make it a valuable resource for data-driven decision-making.
 
+## Screenshot
+
+![image](https://github.com/user-attachments/assets/44ff3009-6c9b-4ccf-ad29-e5ff59c3f249)
 
